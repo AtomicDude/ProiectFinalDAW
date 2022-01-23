@@ -20,6 +20,54 @@ namespace ProiectFinalDAW.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Category>()
+                .Property(e => e.DateCreated)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<Category>()
+                .Property(e => e.DateModified)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<FavouriteAddress>()
+                .Property(e => e.DateCreated)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<FavouriteAddress>()
+                .Property(e => e.DateModified)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<Order>()
+                .Property(e => e.DateCreated)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<Order>()
+                .Property(e => e.DateModified)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<OrderDetail>()
+                .Property(e => e.DateCreated)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<OrderDetail>()
+                .Property(e => e.DateModified)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<Product>()
+                .Property(e => e.DateCreated)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<Product>()
+                .Property(e => e.DateModified)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.DateCreated)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.DateModified)
+                .HasDefaultValueSql("GETDATE()");
+
             base.OnModelCreating(modelBuilder);
         }
     }

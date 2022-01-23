@@ -20,8 +20,6 @@ namespace ProiectFinalDAW.Models
 
         public string Phone_Number { get; set; }
 
-        public List<string> Adress_List { get; set; }
-
         public virtual FavouriteAddress FavouriteAddress { get; set; }
 
         public Guid FavouriteAddressId { get; set; }

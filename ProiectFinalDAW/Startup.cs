@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using ProiectFinalDAW.Data;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.EntityFrameworkCore;
+using ProiectFinalDAW.Repositories.CategoryRepository;
 
 namespace ProiectFinalDAW
 {
@@ -36,6 +37,8 @@ namespace ProiectFinalDAW
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProiectFinalDAW", Version = "v1" });
             });
             services.AddDbContext<Context>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //services.Configure<AppSettings>
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
