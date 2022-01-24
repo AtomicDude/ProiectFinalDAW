@@ -7,10 +7,19 @@ using ProiectFinalDAW.Models.Base;
 
 namespace ProiectFinalDAW.Models
 {
+    public enum role
+    {
+        User, Admin
+    }
+
     public class User : BaseEntity
     {
 
         public string Username { get; set; }
+
+        public string Password { get; set; }
+
+        public role Role { get; set; }
 
         public string First_Name { get; set; }
 

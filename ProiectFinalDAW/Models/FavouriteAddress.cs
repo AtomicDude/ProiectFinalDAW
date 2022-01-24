@@ -8,8 +8,8 @@ using ProiectFinalDAW.Models.Base;
 namespace ProiectFinalDAW.Models
 {
     public class FavouriteAddress:BaseEntity
-    {
-        public string Fav_Address;
+    {   
+        public string Fav_Address { get; set; }
 
         public virtual User User { get; set; }
     }

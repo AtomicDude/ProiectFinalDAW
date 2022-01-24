@@ -10,8 +10,8 @@ using ProiectFinalDAW.Data;
 namespace ProiectFinalDAW.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220123165317_first_migration")]
-    partial class first_migration
+    [Migration("20220124161710_first-migration")]
+    partial class firstmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -63,6 +63,9 @@ namespace ProiectFinalDAW.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("Fav_Address")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -204,8 +207,14 @@ namespace ProiectFinalDAW.Migrations
                     b.Property<string>("Last_Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Phone_Number")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");

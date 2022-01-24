@@ -15,6 +15,9 @@ using ProiectFinalDAW.Data;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using ProiectFinalDAW.Repositories.CategoryRepository;
+using ProiectFinalDAW.Utility;
+using ProiectFinalDAW.Repositories.UserRepository;
+using ProiectFinalDAW.Repositories.FavouriteAddressRepository;
 
 namespace ProiectFinalDAW
 {
@@ -37,8 +40,11 @@ namespace ProiectFinalDAW
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProiectFinalDAW", Version = "v1" });
             });
             services.AddDbContext<Context>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            //services.Configure<AppSettings>
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.AddScoped<IJWTutils, JWTutils>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IFavouriteAddressRepository, FavouriteAddressRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +60,8 @@ namespace ProiectFinalDAW
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseMiddleware<JWTmiddleware>();
 
             app.UseAuthorization();
 

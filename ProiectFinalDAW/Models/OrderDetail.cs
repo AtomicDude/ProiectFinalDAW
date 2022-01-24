@@ -12,6 +12,8 @@ namespace ProiectFinalDAW.Models
         
         public virtual Order Order { get; set; }
 
+        public int Quantity { get; set; }
+
         public Guid ProductId { get; set; }
 
         public Guid OrderId { get; set; }

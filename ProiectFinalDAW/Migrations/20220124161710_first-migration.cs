@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProiectFinalDAW.Migrations
 {
-    public partial class first_migration : Migration
+    public partial class firstmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,6 +27,7 @@ namespace ProiectFinalDAW.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Fav_Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "GETDATE()"),
                     DateModified = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "GETDATE()")
                 },
@@ -65,6 +66,8 @@ namespace ProiectFinalDAW.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Role = table.Column<int>(type: "int", nullable: false),
                     First_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Last_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email_Address = table.Column<string>(type: "nvarchar(max)", nullable: true),

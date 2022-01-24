@@ -24,5 +24,7 @@ namespace ProiectFinalDAW.Models
         public virtual User User { get; set; }
         
         public Guid UserId { get; set; }
+
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

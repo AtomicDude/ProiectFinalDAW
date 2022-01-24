@@ -7,8 +7,10 @@ using ProiectFinalDAW.Repositories.GenericRepository;
 
 namespace ProiectFinalDAW.Repositories.UserRepository
 {
-    interface IUserRepository:IGenericRepository<User>
+    public interface IUserRepository:IGenericRepository<User>
     {
         User GetByUsername(string name);
+        User GetUserAndFavouriteAddress(string name);
+        User GetAllOrders(string name);
     }
 }
