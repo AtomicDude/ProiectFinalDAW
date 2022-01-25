@@ -9,5 +9,6 @@ namespace ProiectFinalDAW.Repositories.ProductRepository
 {
     public interface IProductRepository:IGenericRepository<Product>
     {
+        Product GetByProductBarCode(int BarCode);
     }
 }

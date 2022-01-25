@@ -18,6 +18,9 @@ using ProiectFinalDAW.Repositories.CategoryRepository;
 using ProiectFinalDAW.Utility;
 using ProiectFinalDAW.Repositories.UserRepository;
 using ProiectFinalDAW.Repositories.FavouriteAddressRepository;
+using ProiectFinalDAW.Repositories.ProductRepository;
+using ProiectFinalDAW.Repositories.OrderRepository;
+using ProiectFinalDAW.Repositories.OrderDetailsRepository;
 
 namespace ProiectFinalDAW
 {
@@ -43,8 +46,12 @@ namespace ProiectFinalDAW
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddScoped<IJWTutils, JWTutils>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IFavouriteAddressRepository, FavouriteAddressRepository>();
+            services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

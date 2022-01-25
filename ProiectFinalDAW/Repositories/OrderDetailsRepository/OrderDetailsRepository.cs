@@ -9,7 +9,7 @@ using ProiectFinalDAW.Data;
 
 namespace ProiectFinalDAW.Repositories.OrderDetailsRepository
 {
-    public class OrderDetailsRepository:GenericRepository<OrderDetail>
+    public class OrderDetailsRepository:GenericRepository<OrderDetail>, IOrderDetailsRepository
     {
         public OrderDetailsRepository(Context C) : base(C)
         {

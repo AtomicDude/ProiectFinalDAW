@@ -17,9 +17,9 @@ namespace ProiectFinalDAW.Controllers
         private IOrderRepository orderRepository;
         private IUserRepository userRepository;
 
-        public OrderController(IOrderRepository orderO, IUserRepository userR)
+        public OrderController(IOrderRepository orderR, IUserRepository userR)
         {
-            orderRepository = orderO;
+            orderRepository = orderR;
             userRepository = userR;
         }
 
@@ -70,6 +70,7 @@ namespace ProiectFinalDAW.Controllers
                 {
                     var productDTO = new ProductDTO()
                     {
+                        BarCode = orderDetail.Product.BarCode,
                         Product_Name = orderDetail.Product.Name,
                         Price = orderDetail.Product.Price,
                         Quantity = orderDetail.Quantity

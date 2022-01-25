@@ -20,11 +20,11 @@ namespace ProiectFinalDAW.Controllers
         private IFavouriteAddressRepository favouriteAddress;
         private IJWTutils jwtUtils;
 
-        public UserController(IUserRepository userR, IJWTutils jwtUti, IFavouriteAddressRepository favadd)
+        public UserController(IUserRepository userR, IJWTutils jwtUti, IFavouriteAddressRepository fav_addR)
         {
             userRepository = userR;
             jwtUtils = jwtUti;
-            favouriteAddress = favadd;
+            favouriteAddress = fav_addR;
         }
 
         [HttpGet("{user}")]
@@ -38,7 +38,7 @@ namespace ProiectFinalDAW.Controllers
 
         [HttpGet]
         [Authorization(role.User, role.Admin)]
-        public IActionResult GetmyUser()
+        public IActionResult GetMyUser()
         {
             var user = (User)HttpContext.Items["User"];
             if (user == null)

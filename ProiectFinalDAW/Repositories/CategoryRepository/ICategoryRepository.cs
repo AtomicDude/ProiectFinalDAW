@@ -10,5 +10,6 @@ namespace ProiectFinalDAW.Repositories.CategoryRepository
     public interface ICategoryRepository:IGenericRepository<Category>
     {
         Category GetByCategory(string name);
+        Category GetProducts(string name);
     }
 }

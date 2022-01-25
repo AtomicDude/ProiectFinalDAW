@@ -5,11 +5,16 @@ using System.Threading.Tasks;
 
 namespace ProiectFinalDAW.Models.DTOs
 {
-    public class ProductDTO
+    public class AddNewProductDTO
     {
+        public string Name { get; set; }
+
         public int BarCode { get; set; }
-        public string Product_Name { get; set; }
-        public int Quantity { get; set; }
+
         public int Price { get; set; }
+
+        public string Description { get; set; }
+
+        public string Category { get; set; }
     }
 }
