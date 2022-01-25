@@ -14,5 +14,10 @@ namespace ProiectFinalDAW.Repositories.OrderRepository
         {
 
         }
+
+        public Order GetByOrderNumber(int order_no)
+        {
+            return _table.FirstOrDefault(x => x.Order_Number.Equals(order_no));
+        }
     }
 }

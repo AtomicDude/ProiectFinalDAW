@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 namespace ProiectFinalDAW.Models.DTOs
 {
-    public class OrderDTO
+    public class UpdateOrderStatusDTO
     {
         public int Order_Number { get; set; }
-        public ICollection<ProductDTO> Products { get; set; }
-        public string Adresa { get; set; }
         public string Status { get; set; }
     }
 }

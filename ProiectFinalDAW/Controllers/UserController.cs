@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ProiectFinalDAW.Repositories.UserRepository;
+using ProiectFinalDAW.Repositories.OrderRepository;
 using ProiectFinalDAW.Repositories.FavouriteAddressRepository;
 using ProiectFinalDAW.Models;
 using ProiectFinalDAW.Utility;
@@ -18,13 +19,15 @@ namespace ProiectFinalDAW.Controllers
     {
         private IUserRepository userRepository;
         private IFavouriteAddressRepository favouriteAddress;
+        private IOrderRepository orderRepository;
         private IJWTutils jwtUtils;
 
-        public UserController(IUserRepository userR, IJWTutils jwtUti, IFavouriteAddressRepository fav_addR)
+        public UserController(IUserRepository userR, IJWTutils jwtUti, IFavouriteAddressRepository fav_addR, IOrderRepository orderR)
         {
             userRepository = userR;
             jwtUtils = jwtUti;
             favouriteAddress = fav_addR;
+            orderRepository = orderR;
         }
 
         [HttpGet("{user}")]

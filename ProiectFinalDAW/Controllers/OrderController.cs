@@ -7,6 +7,7 @@ using ProiectFinalDAW.Repositories.OrderRepository;
 using ProiectFinalDAW.Repositories.UserRepository;
 using ProiectFinalDAW.Models;
 using ProiectFinalDAW.Models.DTOs;
+using ProiectFinalDAW.Utility;
 
 namespace ProiectFinalDAW.Controllers
 {
@@ -23,17 +24,21 @@ namespace ProiectFinalDAW.Controllers
             userRepository = userR;
         }
 
+        /*
         [HttpPost]
         public IActionResult Post(Order order)
         {
             var new_order = new Order
             {
+                Order_Number = Order_Counter.Order_Number + 1,
                 Email_address = order.Email_address,
                 Phone_number = order.Phone_number,
                 Address = order.Address,
                 Status = order.Status,
                 User = order.User
             };
+
+            Order_Counter.Order_Number += 1;
 
             orderRepository.Create(new_order);
             var result = orderRepository.Save();
@@ -42,9 +47,45 @@ namespace ProiectFinalDAW.Controllers
                 return Ok();
             else
                 return BadRequest(new { message = "Eroare" });
+        }*/
+
+        [HttpGet("{order_number}")]
+        public IActionResult GetOrder(int order_number)
+        {
+            var user = (User)HttpContext.Items["User"];
+            if (user == null)
+            {
+                return BadRequest(new { Message = "Utilizatorul nu este logat" });
+            }
+            var order = orderRepository.GetByOrderNumber(order_number);
+
+            if (order == null)
+                return BadRequest(new { message = "Comanda cu numarul introdus nu exista" });
+
+            var orderDTO = new OrderDTO()
+            {
+                Order_Number = order.Order_Number,
+                Adresa = order.Address,
+                Status = order.Status.ToString(),
+                Products = new List<ProductDTO>()
+            };
+
+            foreach (var orderdetail in order.OrderDetails)
+            {
+                var productDTO = new ProductDTO()
+                {
+                    BarCode = orderdetail.Product.BarCode,
+                    Product_Name = orderdetail.Product.Name,
+                    Price = orderdetail.Product.Price,
+                    Quantity = orderdetail.Quantity
+                };
+                orderDTO.Products.Add(productDTO);
+            }
+
+            return Ok(orderDTO);
         }
 
-        [HttpGet("orders")]
+        [HttpGet("show_all")]
         public IActionResult GetOrders()
         {
             var user = (User)HttpContext.Items["User"];
@@ -62,6 +103,7 @@ namespace ProiectFinalDAW.Controllers
             {
                 var orderDTO = new OrderDTO()
                 {
+                    Order_Number = order.Order_Number,
                     Products = new List<ProductDTO>(),
                     Adresa = order.Address,
                     Status = order.Status.ToString()
@@ -81,5 +123,57 @@ namespace ProiectFinalDAW.Controllers
             } 
             return Ok(dto);
         }
+
+        [HttpGet("show/{order_number}")]
+        [Authorization(role.Admin)]
+        public IActionResult GetOrderByNumber(int order_number)
+        {
+            var order = orderRepository.GetByOrderNumber(order_number);
+            if (order == null)
+                return BadRequest(new { message = "Comanda cu numarul introdus nu exista" });
+
+            var orderDTO = new OrderDTO()
+            {
+                Order_Number = order.Order_Number,
+                Adresa = order.Address,
+                Status = order.Status.ToString(),
+                Products = new List<ProductDTO>()
+            };
+
+            foreach (var orderdetail in order.OrderDetails)
+            {
+                var productDTO = new ProductDTO()
+                {
+                    BarCode = orderdetail.Product.BarCode,
+                    Product_Name = orderdetail.Product.Name,
+                    Price = orderdetail.Product.Price,
+                    Quantity = orderdetail.Quantity
+                };
+                orderDTO.Products.Add(productDTO);
+            }
+
+            return Ok(orderDTO);
+        }
+
+        [HttpPut("update")]
+        public IActionResult UpdateOrderStatus(UpdateOrderStatusDTO dto) 
+        {
+            var order = orderRepository.GetByOrderNumber(dto.Order_Number);
+            if (order == null)
+                return BadRequest(new { message = "Comanda cu numarul introdus nu exista" });
+
+            if (!string.IsNullOrEmpty(dto.Status))
+            {
+                order.Status = (Order_Status)Enum.Parse(typeof(Order_Status), dto.Status);
+            }
+
+            orderRepository.Update(order);
+            var result = orderRepository.Save();
+
+            if (result)
+                return Ok(new{ message =  "Statusul comenzii a fost actualizat" });
+            return BadRequest(new { message = "Eroare" });
+        }
     }
 }
+

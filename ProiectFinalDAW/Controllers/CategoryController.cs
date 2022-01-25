@@ -92,5 +92,12 @@ namespace ProiectFinalDAW.Controllers
                 return Ok(new { message = "Categoria a fost modificata" });
             return BadRequest(new { message = "Eroare" });
         }
+
+        [HttpDelete("delete/{category}")]
+        [Authorization(role.Admin)]
+        public IActionResult DeleteCategory(string category_name)
+        {
+            return BadRequest();
+        }
     }
 }

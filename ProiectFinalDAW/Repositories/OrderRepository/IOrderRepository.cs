@@ -9,5 +9,6 @@ namespace ProiectFinalDAW.Repositories.OrderRepository
 {
     public interface IOrderRepository:IGenericRepository<Order>
     {
+        public Order GetByOrderNumber(int order_no);
     }
 }

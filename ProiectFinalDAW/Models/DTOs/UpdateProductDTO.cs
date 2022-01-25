@@ -7,7 +7,7 @@ namespace ProiectFinalDAW.Models.DTOs
 {
     public class UpdateProductDTO
     {
-        public Guid Id { get; set; } 
+        public int BarCode { get; set; } 
 
         public string Name { get; set; }
 

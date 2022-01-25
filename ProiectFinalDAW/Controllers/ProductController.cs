@@ -38,7 +38,8 @@ namespace ProiectFinalDAW.Controllers
                 BarCode = product.BarCode,
                 Price = product.Price,
                 Description = product.Description,
-                Category = product.Category.Category_Name
+                Category = product.Category.Category_Name,
+                State = product.Active ? "Activ" : "Inactiv"
             };
 
             return Ok(product_category);
@@ -89,15 +90,15 @@ namespace ProiectFinalDAW.Controllers
             return BadRequest(new { message = "Eroare" });
         }
 
-        /*
+        
         [HttpPut("update")]
         [Authorization(role.Admin)]
         public IActionResult Update(UpdateProductDTO dto)
         {
-            var new_product = productRepository.GetByProductId(dto.Id);
+            var new_product = productRepository.GetByProductBarCode(dto.BarCode);
 
             if (new_product == null)
-                return BadRequest(new { message = "Produsul cu id-ul introdus nu exista" });
+                return BadRequest(new { message = "Produsul cu acest cod de bare nu exista" });
 
             if (!string.IsNullOrEmpty(dto.Name))
             {
@@ -120,27 +121,55 @@ namespace ProiectFinalDAW.Controllers
 
                 if (new_category == null)
                     return BadRequest(new { message = "Categoria introdusa nu exista" });
-                new_product.CategoryId = new_category.Id;
-
-                var old_product = productRepository.GetByProductId(dto.Id);
-
-                if (new_product == null)
-                    return BadRequest(new { message = "Produsul cu id-ul introdus nu exista" });
                 
-                var old_category = old_product.Products.Remove(productRepository.GetByProductId(dto.Id));
-                categoryRepository.Update(new_category);
-                var result = categoryRepository.Save();
-                if (result)
-                {
-                    var second_category = categoryRepository.GetByCategory(dto.Category)
-                }
+                new_product.CategoryId = new_category.Id;
             }
 
-            //update old category
-            //update new category
+            productRepository.Update(new_product);
+            var result = productRepository.Save();
 
+            if (result)
+                return Ok();
+            return BadRequest(new { message = "Eroare" });
         }
-        */
 
+        [HttpPut("{barcode}/trigger")]
+        [Authorization(role.Admin)]
+        public IActionResult ProductState(int barcode)
+        {
+            var product = productRepository.GetByProductBarCode(barcode);
+
+            if (product == null)
+                return BadRequest(new { message = "Produsul cu acest cod de bare nu exista" });
+
+            product.Active = !product.Active;
+
+            productRepository.Update(product);
+            var result = productRepository.Save();
+
+            if (result)
+                return Ok(new { message = product.Active ? "Produsul a fost activat" : "Produsul a fost dezactivat" });
+            return BadRequest(new { message = "Eroare" });
+        }
+
+        /*
+        [HttpDelete("{barcode}")]
+        [Authorization(role.Admin)]
+        public IActionResult DeleteProduct(int barcode)
+        {
+            var product = productRepository.GetByProductBarCode(barcode);
+
+            if (product == null)
+                return BadRequest(new { message = "Produsul cu acest cod de bare nu exista" });
+
+            productRepository.Delete(product);
+
+            var result = productRepository.Save();
+            if (result)
+            {
+                return Ok(new { Message = "Produsul a fost sters" });
+            }
+            return BadRequest(new { Message = "Eroare" });
+        }*/
     }
 }

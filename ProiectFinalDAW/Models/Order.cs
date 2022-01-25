@@ -6,6 +6,11 @@ using ProiectFinalDAW.Models.Base;
 
 namespace ProiectFinalDAW.Models
 {
+    static class Order_Counter
+    {
+        public static int Order_Number = 0;
+    }
+
     public enum Order_Status 
     { 
         Received, Confirmed, Processing, Shipped
@@ -13,6 +18,8 @@ namespace ProiectFinalDAW.Models
 
     public class Order : BaseEntity
     {
+        public int Order_Number { get; set; }
+
         public string Email_address { get; set; }
 
         public string Phone_number { get; set; }
