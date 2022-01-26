@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ProiectFinalDAW.Repositories.GenericRepository;
 using ProiectFinalDAW.Models;
 using ProiectFinalDAW.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProiectFinalDAW.Repositories.OrderRepository
 {
@@ -17,7 +18,7 @@ namespace ProiectFinalDAW.Repositories.OrderRepository
 
         public Order GetByOrderNumber(int order_no)
         {
-            return _table.FirstOrDefault(x => x.Order_Number.Equals(order_no));
+            return _table.Include(x => x.OrderDetails).ThenInclude(x => x.Product).FirstOrDefault(x => x.Order_Number.Equals(order_no));
         }
     }
 }

@@ -210,7 +210,7 @@ namespace ProiectFinalDAW.Controllers
 
             if (!string.IsNullOrEmpty(dto.Status))
             {
-                order.Status = (Order_Status)Enum.Parse(typeof(Order_Status), dto.Status);
+                order.Status = Enum.Parse<Order_Status>(dto.Status);
             }
 
             orderRepository.Update(order);

@@ -258,6 +258,36 @@ namespace ProiectFinalDAW.Migrations
                 principalTable: "Categories",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.Sql(
+            @"
+                DROP TRIGGER [dbo].[Favourite_Addresses_UPDATE];
+            ");
+
+            migrationBuilder.Sql(
+            @"
+                DROP TRIGGER [dbo].[Users_UPDATE];
+            ");
+
+            migrationBuilder.Sql(
+            @"
+                DROP TRIGGER [dbo].[Orders_UPDATE];
+            ");
+
+            migrationBuilder.Sql(
+            @"
+                DROP TRIGGER [dbo].[OrderDetails_UPDATE];
+            ");
+
+            migrationBuilder.Sql(
+            @"
+                DROP TRIGGER [dbo].[Products_UPDATE];
+            ");
+
+            migrationBuilder.Sql(
+            @"
+                DROP TRIGGER [dbo].[Categories_UPDATE];
+            ");
         }
     }
 }

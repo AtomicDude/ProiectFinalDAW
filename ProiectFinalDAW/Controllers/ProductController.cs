@@ -180,8 +180,8 @@ namespace ProiectFinalDAW.Controllers
             }
             return Ok(outDTO);
         }
-        /*
-        [HttpDelete("{barcode}")]
+        
+        [HttpDelete("delete/{barcode}")]
         [Authorization(role.Admin)]
         public IActionResult DeleteProduct(int barcode)
         {
@@ -198,6 +198,6 @@ namespace ProiectFinalDAW.Controllers
                 return Ok(new { Message = "Produsul a fost sters" });
             }
             return BadRequest(new { Message = "Eroare" });
-        }*/
+        }
     }
 }
