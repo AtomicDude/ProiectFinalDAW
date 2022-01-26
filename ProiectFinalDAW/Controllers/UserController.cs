@@ -10,6 +10,7 @@ using ProiectFinalDAW.Models;
 using ProiectFinalDAW.Utility;
 using ProiectFinalDAW.Models.DTOs;
 using BCryptNet = BCrypt.Net.BCrypt;
+using System.Globalization;
 
 namespace ProiectFinalDAW.Controllers
 {
@@ -160,6 +161,8 @@ namespace ProiectFinalDAW.Controllers
             var result = favouriteAddress.Save();
             if (result)
             {
+                //fav_add_and_user.DateModified = DateTime.Now;
+                //Console.WriteLine(DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss"));
                 userRepository.Update(fav_add_and_user);
                 result = userRepository.Save();
                 

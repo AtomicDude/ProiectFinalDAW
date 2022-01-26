@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ProiectFinalDAW.Models;
+using ProiectFinalDAW.Models.Base;
 
 namespace ProiectFinalDAW.Data
 {
@@ -21,54 +22,57 @@ namespace ProiectFinalDAW.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>()
-                .Property(e => e.DateCreated)
-                .HasDefaultValueSql("GETDATE()");
-
-            modelBuilder.Entity<Category>()
-                .Property(e => e.DateModified)
-                .HasDefaultValueSql("GETDATE()");
-
-            modelBuilder.Entity<FavouriteAddress>()
-                .Property(e => e.DateCreated)
-                .HasDefaultValueSql("GETDATE()");
-
-            modelBuilder.Entity<FavouriteAddress>()
-                .Property(e => e.DateModified)
-                .HasDefaultValueSql("GETDATE()");
-
-            modelBuilder.Entity<Order>()
-                .Property(e => e.DateCreated)
-                .HasDefaultValueSql("GETDATE()");
-
-            modelBuilder.Entity<Order>()
-                .Property(e => e.DateModified)
-                .HasDefaultValueSql("GETDATE()");
-
-            modelBuilder.Entity<OrderDetail>()
-                .Property(e => e.DateCreated)
-                .HasDefaultValueSql("GETDATE()");
-
-            modelBuilder.Entity<OrderDetail>()
-                .Property(e => e.DateModified)
-                .HasDefaultValueSql("GETDATE()");
+                .HasMany(e => e.Products)
+                .WithOne(e => e.Category)
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Product>()
-                .Property(e => e.DateCreated)
-                .HasDefaultValueSql("GETDATE()");
+                .Property(e => e.Name)
+                .HasDefaultValue("Produsul nu exista");
 
             modelBuilder.Entity<Product>()
-                .Property(e => e.DateModified)
-                .HasDefaultValueSql("GETDATE()");
+                .Property(e => e.BarCode)
+                .HasDefaultValueSql(null);
 
-            modelBuilder.Entity<User>()
-                .Property(e => e.DateCreated)
-                .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Product>()
+                .Property(e => e.Description)
+                .HasDefaultValue("Produsul nu exista");
 
-            modelBuilder.Entity<User>()
-                .Property(e => e.DateModified)
-                .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Product>()
+                .Property(e => e.Price)
+                .HasDefaultValue("0");
+
+            modelBuilder.Entity<Product>()
+                .Property(e => e.Active)
+                .HasDefaultValue(false);
+
+            modelBuilder.Entity<Product>()
+                .HasMany(e => e.Order_Details)
+                .WithOne(e => e.Product)
+                .OnDelete(DeleteBehavior.SetNull);
 
             base.OnModelCreating(modelBuilder);
+        }
+        
+        public override int SaveChanges() 
+        {
+            var entries = ChangeTracker
+        .Entries()
+        .Where(e => e.Entity is BaseEntity && (
+                e.State == EntityState.Added
+                || e.State == EntityState.Modified));
+
+            foreach (var entityEntry in entries)
+            {
+                ((BaseEntity)entityEntry.Entity).DateModified = DateTime.Now;
+
+                if (entityEntry.State == EntityState.Added)
+                {
+                    ((BaseEntity)entityEntry.Entity).DateCreated = DateTime.Now;
+                }
+            }
+
+            return base.SaveChanges();
         }
     }
 }

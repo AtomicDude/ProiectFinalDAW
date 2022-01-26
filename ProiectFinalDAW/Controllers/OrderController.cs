@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ProiectFinalDAW.Repositories.OrderRepository;
+using ProiectFinalDAW.Repositories.OrderDetailsRepository;
 using ProiectFinalDAW.Repositories.UserRepository;
+using ProiectFinalDAW.Repositories.ProductRepository;
+using ProiectFinalDAW.Repositories.FavouriteAddressRepository;
 using ProiectFinalDAW.Models;
 using ProiectFinalDAW.Models.DTOs;
 using ProiectFinalDAW.Utility;
@@ -16,38 +19,81 @@ namespace ProiectFinalDAW.Controllers
     public class OrderController:ControllerBase
     {
         private IOrderRepository orderRepository;
+        private IFavouriteAddressRepository favouriteAddressRepository;
+        private IOrderDetailsRepository orderDetailsRepository;
         private IUserRepository userRepository;
+        private IProductRepository productRepository;
 
-        public OrderController(IOrderRepository orderR, IUserRepository userR)
+        public OrderController(IOrderRepository orderR, IUserRepository userR, IProductRepository productR, IOrderDetailsRepository orderDetailsR, IFavouriteAddressRepository favouriteAddressR)
         {
             orderRepository = orderR;
             userRepository = userR;
+            productRepository = productR;
+            orderDetailsRepository = orderDetailsR;
+            favouriteAddressRepository = favouriteAddressR;
         }
 
-        /*
         [HttpPost]
-        public IActionResult Post(Order order)
+        public IActionResult Post(NewOrderDTO dto)
         {
+            var user = (User)HttpContext.Items["User"];
+            if (user == null)
+            {
+                return BadRequest(new { Message = "Utilizatorul nu este logat" });
+            }
+
+            var order_no = Order_Counter.get_order_number();
+            Order_Counter.counter();
+
+            var get_fav_add = userRepository.GetUserAndFavouriteAddress(user.Username);
+
             var new_order = new Order
             {
-                Order_Number = Order_Counter.Order_Number + 1,
-                Email_address = order.Email_address,
-                Phone_number = order.Phone_number,
-                Address = order.Address,
-                Status = order.Status,
-                User = order.User
+                Order_Number = order_no,
+                Email_address = user.Email_Address,
+                Phone_number = string.IsNullOrEmpty(dto.Phone_Number) ? user.Phone_Number : dto.Phone_Number,
+                Address = string.IsNullOrEmpty(dto.Address) ? get_fav_add.FavouriteAddress.Fav_Address : dto.Address,
+                Status = Order_Status.Received,
+                UserId = user.Id
             };
-
-            Order_Counter.Order_Number += 1;
 
             orderRepository.Create(new_order);
             var result = orderRepository.Save();
 
             if (result)
-                return Ok();
-            else
-                return BadRequest(new { message = "Eroare" });
-        }*/
+            {
+                var order = orderRepository.GetByOrderNumber(order_no);
+
+                if (order == null)
+                {
+                    return BadRequest(new { message = "Eroare 1" });
+                }
+                foreach (var product in dto.Products)
+                {
+                    var prod = productRepository.GetByProductBarCode(product.BarCode);
+                    
+                    if (prod == null)
+                        return BadRequest(new { message = "Produsul nu exista" });
+                    var order_detail = new OrderDetail
+                    {
+                        ProductId = prod.Id,
+                        Quantity = product.Quantity,
+                        OrderId = order.Id
+                    };
+
+                    orderDetailsRepository.Create(order_detail);
+
+                    result = orderDetailsRepository.Save();
+
+                    if (!result)
+                    {
+                        return BadRequest(new { message = "Eroare 2" });
+                    }
+                }
+            }
+            
+            return Ok();
+        }
 
         [HttpGet("{order_number}")]
         public IActionResult GetOrder(int order_number)

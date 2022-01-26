@@ -1,14 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ProiectFinalDAW.Models.Base;
 
 namespace ProiectFinalDAW.Models
 {
-    static class Order_Counter
+    public static class Order_Counter
     {
         public static int Order_Number = 0;
+        public static int get_order_number()
+        {
+            Order_Number = int.Parse(File.ReadAllText(@"Order_Number.txt"));
+            return Order_Number;
+        }
+        public static void counter()
+        {
+            Order_Number += 1;
+            File.WriteAllTextAsync("Order_Number.txt", Order_Number.ToString());
+        }
     }
 
     public enum Order_Status 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProiectFinalDAW.Data;
 
 namespace ProiectFinalDAW.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20220126143845_6-thmigration")]
+    partial class _6thmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,9 +146,7 @@ namespace ProiectFinalDAW.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<int>("BarCode")
                         .HasColumnType("int");
@@ -163,19 +163,13 @@ namespace ProiectFinalDAW.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("Produsul nu exista");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("Produsul nu exista");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Price")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -251,8 +245,7 @@ namespace ProiectFinalDAW.Migrations
 
                     b.HasOne("ProiectFinalDAW.Models.Product", "Product")
                         .WithMany("Order_Details")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Order");
 
@@ -263,8 +256,7 @@ namespace ProiectFinalDAW.Migrations
                 {
                     b.HasOne("ProiectFinalDAW.Models.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
                 });

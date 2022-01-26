@@ -38,7 +38,7 @@ namespace ProiectFinalDAW.Controllers
                 BarCode = product.BarCode,
                 Price = product.Price,
                 Description = product.Description,
-                Category = product.Category.Category_Name,
+                Category = product.Category == null ? "Nu are categorie" : product.Category.Category_Name,
                 State = product.Active ? "Activ" : "Inactiv"
             };
 

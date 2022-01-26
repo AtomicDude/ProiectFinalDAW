@@ -20,7 +20,7 @@ namespace ProiectFinalDAW.Models
 
         public Category Category {get; set;}
 
-        public Guid CategoryId { get; set; }
+        public Guid? CategoryId { get; set; }
 
         public virtual ICollection<OrderDetail> Order_Details { get; set; }
     }
