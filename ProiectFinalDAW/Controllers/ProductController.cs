@@ -152,6 +152,34 @@ namespace ProiectFinalDAW.Controllers
             return BadRequest(new { message = "Eroare" });
         }
 
+        [HttpGet("price_range")]
+        public IActionResult ProductsInPriceRange(PriceRangeDTO dto)
+        {
+            var result = productRepository.GetAllProductsInPriceRange(dto.Low, dto.High);
+
+            if (result == null)
+                return BadRequest("Eroare");
+
+            var outDTO = new ListOfProductsDTO()
+            {
+                Products = new List<ProductInfoDTO>()
+            };
+
+            foreach (var product in result)
+            {
+                var category = productRepository.GetByProductBarCode(product.BarCode);
+                var prodDTO = new ProductInfoDTO()
+                {
+                    BarCode = product.BarCode,
+                    Description = product.Description,
+                    Price = product.Price,
+                    Category = category.Category.Category_Name,
+                    Name = product.Name
+                };
+                outDTO.Products.Add(prodDTO);
+            }
+            return Ok(outDTO);
+        }
         /*
         [HttpDelete("{barcode}")]
         [Authorization(role.Admin)]

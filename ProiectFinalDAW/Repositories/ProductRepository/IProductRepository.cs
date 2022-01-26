@@ -10,5 +10,7 @@ namespace ProiectFinalDAW.Repositories.ProductRepository
     public interface IProductRepository:IGenericRepository<Product>
     {
         Product GetByProductBarCode(int BarCode);
+        List<Product> GetAllProductsInPriceRange(int low, int high);
+        ICollection<Tuple<string,int>> GetNumberOfProductsFromEachCategory();
     }
 }

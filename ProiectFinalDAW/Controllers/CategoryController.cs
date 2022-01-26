@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ProiectFinalDAW.Repositories.CategoryRepository;
+using ProiectFinalDAW.Repositories.ProductRepository;
 using ProiectFinalDAW.Models;
 using ProiectFinalDAW.Models.DTOs;
 using ProiectFinalDAW.Utility;
@@ -15,10 +16,12 @@ namespace ProiectFinalDAW.Controllers
     public class CategoryController : ControllerBase
     {
         private ICategoryRepository categoryRepository;
+        private IProductRepository productRepository;
 
-        public CategoryController(ICategoryRepository categoryR)
+        public CategoryController(ICategoryRepository categoryR, IProductRepository productR)
         {
             categoryRepository = categoryR;
+            productRepository = productR;
         }
 
         [HttpGet("{category}")]
@@ -46,6 +49,28 @@ namespace ProiectFinalDAW.Controllers
                 category_products.Products.Add(productDTO);
             }
             return Ok(category_products);
+        }
+
+        [HttpGet("no_products")]
+        public IActionResult GetNumberOfProducts()
+        {
+            var result = productRepository.GetNumberOfProductsFromEachCategory();
+            if (result.Count == 0 || result is null)
+                return BadRequest(new { message = "Eroare" });
+
+            var outDTO = new NoProdInCategDTO()
+            {
+                Categories = new List<List<(string,int)>>()
+            };
+
+            foreach(var Tuplu in result)
+            {
+                var lista = new List<(string Category_Name, int No_Prod)>();
+                lista.Add((Tuplu.Item1, Tuplu.Item2));
+                outDTO.Categories.Add(lista);
+            }
+
+            return Ok(outDTO);
         }
 
         [HttpPost]
