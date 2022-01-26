@@ -67,6 +67,132 @@ namespace ProiectFinalDAW.Migrations
                 principalTable: "Categories",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.SetNull);
+
+            migrationBuilder.Sql(
+            @"
+                CREATE TRIGGER [dbo].[FavouriteAddresses_UPDATE] ON [dbo].[FavouriteAddresses]
+                    AFTER UPDATE
+                AS
+                BEGIN
+                    SET NOCOUNT ON;
+
+                    IF ((SELECT TRIGGER_NESTLEVEL()) > 1) RETURN;
+
+                    DECLARE @auxId uniqueidentifier
+
+                    SELECT @auxId = INSERTED.Id
+                    FROM INSERTED
+
+                    UPDATE dbo.FavouriteAddresses
+                    SET DateModified = GETDATE()
+                    WHERE Id = @auxId
+                END
+            ");
+
+            migrationBuilder.Sql(
+            @"
+                CREATE TRIGGER [dbo].[Users_UPDATE] ON [dbo].[User]
+                    AFTER UPDATE
+                AS
+                BEGIN
+                    SET NOCOUNT ON;
+
+                    IF ((SELECT TRIGGER_NESTLEVEL()) > 1) RETURN;
+
+                    DECLARE @auxId uniqueidentifier
+
+                    SELECT @auxId = INSERTED.Id
+                    FROM INSERTED
+
+                    UPDATE dbo.Users
+                    SET DateModified = GETDATE()
+                    WHERE Id = @auxId
+                END
+            ");
+
+            migrationBuilder.Sql(
+            @"
+                CREATE TRIGGER [dbo].[Orders_UPDATE] ON [dbo].[Orders]
+                    AFTER UPDATE
+                AS
+                BEGIN
+                    SET NOCOUNT ON;
+
+                    IF ((SELECT TRIGGER_NESTLEVEL()) > 1) RETURN;
+
+                    DECLARE @auxId uniqueidentifier
+
+                    SELECT @auxId = INSERTED.Id
+                    FROM INSERTED
+
+                    UPDATE dbo.Orders
+                    SET DateModified = GETDATE()
+                    WHERE Id = @auxId
+                END
+            ");
+
+            migrationBuilder.Sql(
+            @"
+                CREATE TRIGGER [dbo].[OrderDetails_UPDATE] ON [dbo].[OrderDetails]
+                    AFTER UPDATE
+                AS
+                BEGIN
+                    SET NOCOUNT ON;
+
+                    IF ((SELECT TRIGGER_NESTLEVEL()) > 1) RETURN;
+
+                    DECLARE @auxId uniqueidentifier
+
+                    SELECT @auxId = INSERTED.Id
+                    FROM INSERTED
+
+                    UPDATE dbo.OrderDetails
+                    SET DateModified = GETDATE()
+                    WHERE Id = @auxId
+                END
+            ");
+
+            migrationBuilder.Sql(
+            @"
+                CREATE TRIGGER [dbo].[Products_UPDATE] ON [dbo].[Products]
+                    AFTER UPDATE
+                AS
+                BEGIN
+                    SET NOCOUNT ON;
+
+                    IF ((SELECT TRIGGER_NESTLEVEL()) > 1) RETURN;
+
+                    DECLARE @auxId uniqueidentifier
+
+                    SELECT @auxId = INSERTED.Id
+                    FROM INSERTED
+
+                    UPDATE dbo.Products
+                    SET DateModified = GETDATE()
+                    WHERE Id = @auxId
+                END
+            ");
+
+            migrationBuilder.Sql(
+            @"
+                CREATE TRIGGER [dbo].[Categories_UPDATE] ON [dbo].[Categories]
+                    AFTER UPDATE
+                AS
+                BEGIN
+                    SET NOCOUNT ON;
+
+                    IF ((SELECT TRIGGER_NESTLEVEL()) > 1) RETURN;
+
+                    DECLARE @auxId uniqueidentifier
+
+                    SELECT @auxId = INSERTED.Id
+                    FROM INSERTED
+
+                    UPDATE dbo.Categories
+                    SET DateModified = GETDATE()
+                    WHERE Id = @auxId
+                END
+            ");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
